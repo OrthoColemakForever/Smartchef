@@ -1,2 +1,2 @@
-# PantryPalV2
+# Smartchef
 Recipe Manager App for Tablets
