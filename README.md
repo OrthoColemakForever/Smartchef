@@ -1,56 +1,72 @@
-# Welcome to your Expo app 👋
+# SmartChef
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform, voice-first cooking assistant for tablets.
 
-## Get started
+## About
 
-1. Install dependencies
+The core idea: parse a recipe into a structured `RecipeGraph` once (via an LLM call, or
+by hand through a manual entry UI), then do everything else — scaling, navigation,
+substitutions — as pure local computation. No network calls, no tokens spent, and it
+works offline once a recipe is in your library.
 
-   ```bash
-   npm install
-   ```
+A few architectural choices worth knowing up front:
 
-2. Start the app
+- **BYOK (bring your own key).** API keys live in secure on-device storage and calls go
+  straight from the device to the provider — there's no backend proxying inference.
+- **Provider-agnostic.** An `LLMProvider` interface is meant to support multiple
+  providers (Anthropic, OpenAI, Gemini, OpenRouter), not lock into one.
+- **Voice-first.** Built around hands-free use in a kitchen — TTS readout, STT voice
+  commands, and timers are core to the experience, not an add-on.
 
-   ```bash
-   npx expo start
-   ```
+## Status
 
-In the output, you'll find options to open the app in a
+Early and actively in development. Currently partway through **Step 1 — the spine**:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- ✅ `RecipeGraph` types (`src/lib/recipe-graph.ts`)
+- ✅ `scale()` — scales ingredient amounts and servings, with a full passing test suite
+  (`src/lib/scale.ts`, `src/lib/scale.test.ts`)
+- ⬜ `LLMProvider` interface + first provider adapter
+- ⬜ Manual recipe entry UI → SQLite → rendered recipe list
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+There's no cooking-session UI, voice support, or persistence yet — right now this is
+foundational data-layer work, not a runnable app experience.
 
-## Get a fresh project
+## Tech stack
 
-When you're ready, run:
+- [Expo](https://expo.dev) (SDK 57) + React Native
+- TypeScript
+- [Jest](https://jestjs.io) (`jest-expo` preset) for testing
+- Planned: Zustand (session state), SQLite (local recipe storage), Supabase (auth + sync)
+
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+From there, follow the CLI's prompts to open the app in a simulator, Expo Go, or a
+connected device.
 
-### Other setup steps
+Run the test suite:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npm test
+```
 
-## Learn more
+Typecheck the project:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx tsc --noEmit
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Roadmap
 
-## Join the community
+1. **Spine** — `RecipeGraph` types, `scale()`, `LLMProvider` interface, manual recipe
+   entry UI *(in progress)*
+2. **Interaction loop** — cooking session state machine, TTS readout, STT voice
+   commands, timers, `ask()` / `editRecipe()`
+3. **Provider breadth & persistence** — additional `LLMProvider` adapters, secure key
+   storage + entry UI, Supabase auth and sync
+4. **Phase 2** — on-device inference, OCR recipe import, interruption handling
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
