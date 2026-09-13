@@ -23,6 +23,20 @@ const lettuce: RecipeTyping.Ingredient = {
   unit: null,
 };
 
+const salt: RecipeTyping.Ingredient = {
+  id: Crypto.randomUUID(),
+  name: "salt",
+  amount: null,
+  unit: null,
+};
+
+const pepper: RecipeTyping.Ingredient = {
+  id: Crypto.randomUUID(),
+  name: "pepper",
+  amount: 1,
+  unit: "tsp",
+};
+
 const tomato: RecipeTyping.Ingredient = {
   id: Crypto.randomUUID(),
   name: "tomato",
@@ -47,7 +61,14 @@ const prepIngredients: RecipeTyping.Step = {
 const assembleSandwich: RecipeTyping.Step = {
   id: Crypto.randomUUID(),
   index: 2,
-  usesIngredientIDs: [bread.id, lettuce.id, bacon.id, tomato.id],
+  usesIngredientIDs: [
+    bread.id,
+    lettuce.id,
+    bacon.id,
+    salt.id,
+    pepper.id,
+    tomato.id,
+  ],
   command: "Layer ingredients between bread slices and enjoy.",
 };
 
@@ -68,7 +89,7 @@ const blt: RecipeTyping.Recipe = {
   name: "BLT Sandwich",
   type: "lunch",
   servings: 1,
-  ingredients: [bacon, lettuce, tomato, bread],
+  ingredients: [salt, pepper, bacon, lettuce, tomato, bread],
   instructions: [toastBread, prepIngredients, assembleSandwich],
   substitutions: [subTurkeyBacon],
 };
@@ -76,10 +97,11 @@ const blt: RecipeTyping.Recipe = {
 describe("scale", () => {
   const double = scale(blt, 2);
   const half = scale(blt, 0.5);
-  const normal = scale(blt, 1);
 
   it("doubles ingredient amounts", () => {
     expect(double.ingredients).toEqual([
+      { ...salt, amount: null },
+      { ...pepper, amount: 2 },
       { ...bacon, amount: 6 },
       { ...lettuce, amount: 2 },
       { ...tomato, amount: 2 },
@@ -87,7 +109,40 @@ describe("scale", () => {
     ]);
   });
 
+  it("halves ingredient amounts", () => {
+    expect(half.ingredients).toEqual([
+      { ...salt, amount: null },
+      { ...pepper, amount: 0.5 },
+      { ...bacon, amount: 1.5 },
+      { ...lettuce, amount: 0.5 },
+      { ...tomato, amount: 0.5 },
+      { ...bread, amount: 1 },
+    ]);
+  });
+
+  it("doubles substituted ingredient amounts", () => {
+    expect(
+      double.substitutions.find(
+        (substitution) => substitution.newIngredient.name === "turkey_bacon",
+      )?.newIngredient,
+    ).toEqual({ ...turkeyBacon, amount: 6 });
+  });
+
   it("doubles recipe serving size", () => {
     expect(double.servings).toBe(2);
+  });
+
+  it("halves recipe serving size", () => {
+    expect(half.servings).toBe(0.5);
+  });
+
+  it("leaves the recipe ID unchanged", () => {
+    expect(double.id).toBe(blt.id);
+  });
+
+  it("handles 'pinches' and other informal units appropriately", () => {
+    expect(
+      half.ingredients.find((ingredient) => ingredient.name === "salt")?.amount,
+    ).toBe(null);
   });
 });
