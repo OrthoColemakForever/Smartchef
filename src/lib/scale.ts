@@ -28,6 +28,7 @@ export function scale(recipe: Recipe, multiplier: number): Recipe {
   const scaledRecipe: Recipe = {
     id: recipe.id,
     name: recipe.name,
+    imageUri: recipe.imageUri,
     type: recipe.type,
     servings: recipe.servings * multiplier,
     ingredients: scaledIngredients,

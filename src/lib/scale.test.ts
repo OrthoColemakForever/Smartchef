@@ -87,6 +87,7 @@ const subTurkeyBacon: RecipeTyping.Substitution = {
 const blt: RecipeTyping.Recipe = {
   id: Crypto.randomUUID(),
   name: "BLT Sandwich",
+  imageUri: undefined,
   type: "lunch",
   servings: 1,
   ingredients: [salt, pepper, bacon, lettuce, tomato, bread],

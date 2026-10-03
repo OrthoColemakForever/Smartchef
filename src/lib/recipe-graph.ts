@@ -1,7 +1,8 @@
 export interface Recipe {
   id: string;
   name: string;
-  type: "breakfast" | "lunch" | "dinner" | "snack" | "dessert";
+  imageUri?: string;
+  type: "breakfast" | "lunch" | "dinner" | "snack" | "side" | "dessert";
   servings: number;
   ingredients: Ingredient[];
   instructions: Step[];
