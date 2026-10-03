@@ -3,12 +3,13 @@
     "name": "Little Chef",
     "slug": "Smartchef",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "smartchef",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
-      "bundleIdentifier": "com.anonymous.Smartchef"
+      "bundleIdentifier": "com.anonymous.Smartchef",
+      "requireFullscreen": true
     },
     "android": {
       "adaptiveIcon": {
@@ -33,7 +34,8 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      ["expo-screen-orientation", { "initialOrientation": "LANDSCAPE" }]
     ],
     "experiments": {
       "typedRoutes": true,
