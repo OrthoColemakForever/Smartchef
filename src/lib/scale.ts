@@ -29,9 +29,10 @@ export function scale(recipe: Recipe, multiplier: number): Recipe {
     id: recipe.id,
     name: recipe.name,
     imageUri: recipe.imageUri,
-    type: recipe.type,
+    categories: recipe.categories,
     servings: recipe.servings * multiplier,
     ingredients: scaledIngredients,
+    highlightIngredientIDs: recipe.highlightIngredientIDs,
     instructions: recipe.instructions,
     substitutions: scaledSubstitutions,
   };

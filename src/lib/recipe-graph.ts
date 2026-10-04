@@ -2,12 +2,21 @@ export interface Recipe {
   id: string;
   name: string;
   imageUri?: string;
-  type: "breakfast" | "lunch" | "dinner" | "snack" | "side" | "dessert";
+  categories: RecipeCategory[];
   servings: number;
   ingredients: Ingredient[];
+  highlightIngredientIDs: string[];
   instructions: Step[];
   substitutions: Substitution[];
 }
+
+export type RecipeCategory =
+  | "breakfast"
+  | "lunch"
+  | "dinner"
+  | "snack"
+  | "side"
+  | "dessert";
 
 export interface Ingredient {
   id: string;
@@ -44,4 +53,8 @@ export type Unit =
   | "quart"
   | "gallon"
   | "oz"
+  | "can"
+  | "slice"
+  | "clove"
+  | "half"
   | null;

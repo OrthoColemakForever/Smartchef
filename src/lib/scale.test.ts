@@ -88,9 +88,10 @@ const blt: RecipeTyping.Recipe = {
   id: Crypto.randomUUID(),
   name: "BLT Sandwich",
   imageUri: undefined,
-  type: "lunch",
+  categories: ["lunch"],
   servings: 1,
   ingredients: [salt, pepper, bacon, lettuce, tomato, bread],
+  highlightIngredientIDs: [bacon.id, lettuce.id, tomato.id],
   instructions: [toastBread, prepIngredients, assembleSandwich],
   substitutions: [subTurkeyBacon],
 };
