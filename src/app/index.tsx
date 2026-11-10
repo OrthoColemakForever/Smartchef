@@ -1,4 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Colors, Spacing } from "@/constants/theme";
 import { Recipe } from "@/lib/recipe-graph";
 import { RecipeCard } from "@/components/recipe-card";
 
@@ -53,15 +55,40 @@ const recipes: Recipe[] = [
   },
 ];
 
+const MIN_CARD_WIDTH = 220;
+const CARD_GAP = Spacing.two;
+const GRID_PADDING = Spacing.three;
+const MAX_COLUMNS = 3;
+
 export default function RecipeGrid() {
+  const [containerWidth, setContainerWidth] = useState(0);
+  const availableWidth = containerWidth - GRID_PADDING * 2;
+  const numColumns = Math.min(
+    MAX_COLUMNS,
+    Math.max(
+      1,
+      Math.floor((availableWidth + CARD_GAP) / (MIN_CARD_WIDTH + CARD_GAP)),
+    ),
+  );
+  const cardWidth = (availableWidth - CARD_GAP * (numColumns - 1)) / numColumns;
   return (
-    <FlatList
-      style={styles.container}
-      data={recipes}
-      numColumns={3}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <RecipeCard recipe={item} />}
-    />
+    <View
+      style={{ flex: 1 }}
+      onLayout={(event) => setContainerWidth(event.nativeEvent.layout.width)}
+    >
+      <FlatList
+        key={numColumns}
+        style={styles.container}
+        contentContainerStyle={{ padding: GRID_PADDING, gap: CARD_GAP }}
+        columnWrapperStyle={numColumns > 1 ? { gap: CARD_GAP } : undefined}
+        data={recipes}
+        numColumns={numColumns}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <RecipeCard recipe={item} width={cardWidth} />
+        )}
+      />
+    </View>
   );
 }
 

@@ -3,24 +3,26 @@ import { Image } from "expo-image";
 import { Recipe } from "@/lib/recipe-graph";
 import { Colors, Spacing } from "@/constants/theme";
 
-type RecipeCardProps = { recipe: Recipe };
+type RecipeCardProps = { recipe: Recipe; width: number };
 
 const MAX_VISIBLE_CATEGORIES = 2;
 const MAX_VISIBLE_CHIPS = 5;
 
-export function RecipeCard({ recipe }: RecipeCardProps) {
+export function RecipeCard({ recipe, width }: RecipeCardProps) {
   // `ingredients` only has id/name/amount/unit — `highlightIngredientIDs` is just a
   // list of strings. To actually show chip text, look up each id against the real
   // ingredients and keep only the ones that match. `.filter()` walks the array and
   // keeps whatever the callback returns `true` for.
   const highlightedIngredients = recipe.ingredients
-    .filter((ingredient) => recipe.highlightIngredientIDs.includes(ingredient.id))
+    .filter((ingredient) =>
+      recipe.highlightIngredientIDs.includes(ingredient.id),
+    )
     .slice(0, MAX_VISIBLE_CHIPS);
 
   const visibleCategories = recipe.categories.slice(0, MAX_VISIBLE_CATEGORIES);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { width }]}>
       <View style={styles.imageArea}>
         {recipe.imageUri ? (
           <Image
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 16,
     backgroundColor: Colors.backgroundElement,
-    width: 240,
     aspectRatio: 1.4,
   },
   imageArea: {
