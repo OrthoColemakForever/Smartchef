@@ -92,7 +92,7 @@ const blt: RecipeTyping.Recipe = {
   servings: 1,
   ingredients: [salt, pepper, bacon, lettuce, tomato, bread],
   highlightIngredientIDs: [bacon.id, lettuce.id, tomato.id],
-  instructions: [toastBread, prepIngredients, assembleSandwich],
+  steps: [toastBread, prepIngredients, assembleSandwich],
   substitutions: [subTurkeyBacon],
 };
 

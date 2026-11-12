@@ -6,7 +6,7 @@ export interface Recipe {
   servings: number;
   ingredients: Ingredient[];
   highlightIngredientIDs: string[];
-  instructions: Step[];
+  steps: Step[];
   substitutions: Substitution[];
 }
 

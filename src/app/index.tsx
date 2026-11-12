@@ -17,7 +17,7 @@ const recipes: Recipe[] = [
       { id: "i1c", name: "parmesan", amount: 0.5, unit: "cup" },
     ],
     highlightIngredientIDs: ["i1", "i1b", "i1c"],
-    instructions: [],
+    steps: [],
     substitutions: [],
   },
   {
@@ -28,7 +28,7 @@ const recipes: Recipe[] = [
     servings: 8,
     ingredients: [{ id: "i2", name: "potato", amount: 3, unit: null }],
     highlightIngredientIDs: ["i2"],
-    instructions: [],
+    steps: [],
     substitutions: [],
   },
   {
@@ -39,7 +39,7 @@ const recipes: Recipe[] = [
     servings: 4,
     ingredients: [{ id: "i3", name: "chicken breasts", amount: 4, unit: null }],
     highlightIngredientIDs: ["i3"],
-    instructions: [],
+    steps: [],
     substitutions: [],
   },
   {
@@ -50,7 +50,7 @@ const recipes: Recipe[] = [
     servings: 12,
     ingredients: [{ id: "i4", name: "chocolate chips", amount: 1, unit: null }],
     highlightIngredientIDs: ["i4"],
-    instructions: [],
+    steps: [],
     substitutions: [],
   },
 ];

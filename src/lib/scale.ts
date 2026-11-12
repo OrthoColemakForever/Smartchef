@@ -33,7 +33,7 @@ export function scale(recipe: Recipe, multiplier: number): Recipe {
     servings: recipe.servings * multiplier,
     ingredients: scaledIngredients,
     highlightIngredientIDs: recipe.highlightIngredientIDs,
-    instructions: recipe.instructions,
+    steps: recipe.steps,
     substitutions: scaledSubstitutions,
   };
 
