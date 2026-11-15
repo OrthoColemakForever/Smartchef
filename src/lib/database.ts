@@ -1,6 +1,6 @@
 import { randomUUID } from "expo-crypto";
 import { SQLiteDatabase } from "expo-sqlite";
-import { Recipe } from "@/lib/recipe-graph";
+import { Ingredient, Recipe, RecipeCategory, Step, Substitution, Unit } from "@/lib/recipe-graph";
 
 export async function setupDatabase(db: SQLiteDatabase) {
   await db.execAsync(`
@@ -109,4 +109,99 @@ export async function saveRecipe(
       ],
     );
   }
+}
+
+export async function getAllRecipes(db: SQLiteDatabase): Promise<Recipe[]> {
+  const recipeRows = await db.getAllAsync<{
+    id: string;
+    name: string;
+    image_uri: string | null;
+    servings: number;
+  }>("SELECT * FROM recipes");
+
+  const recipes: Recipe[] = [];
+
+  for (const recipeRow of recipeRows) {
+    const categoryRows = await db.getAllAsync<{ category: RecipeCategory }>(
+      "SELECT category FROM recipe_categories WHERE recipe_id = ?",
+      [recipeRow.id],
+    );
+
+    const ingredientRows = await db.getAllAsync<{
+      id: string;
+      name: string;
+      amount: number | null;
+      unit: Unit;
+      is_highlighted: number;
+    }>("SELECT * FROM ingredients WHERE recipe_id = ?", [recipeRow.id]);
+
+    const ingredients: Ingredient[] = ingredientRows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      amount: row.amount,
+      unit: row.unit,
+    }));
+
+    const highlightIngredientIDs = ingredientRows
+      .filter((row) => row.is_highlighted === 1)
+      .map((row) => row.id);
+
+    const stepRows = await db.getAllAsync<{
+      id: string;
+      step_index: number;
+      command: string;
+    }>("SELECT * FROM steps WHERE recipe_id = ? ORDER BY step_index", [recipeRow.id]);
+
+    const steps: Step[] = [];
+    for (const stepRow of stepRows) {
+      const stepIngredientRows = await db.getAllAsync<{ ingredient_id: string }>(
+        "SELECT ingredient_id FROM step_ingredients WHERE step_id = ?",
+        [stepRow.id],
+      );
+
+      steps.push({
+        id: stepRow.id,
+        index: stepRow.step_index,
+        command: stepRow.command,
+        usesIngredientIDs: stepIngredientRows.map((row) => row.ingredient_id),
+      });
+    }
+
+    const substitutionRows = await db.getAllAsync<{
+      old_ingredient_id: string;
+      beginning_with_step_id: string;
+      new_ingredient_name: string;
+      new_ingredient_amount: number | null;
+      new_ingredient_unit: Unit;
+    }>(
+      `SELECT substitutions.* FROM substitutions
+       JOIN ingredients ON substitutions.old_ingredient_id = ingredients.id
+       WHERE ingredients.recipe_id = ?`,
+      [recipeRow.id],
+    );
+
+    const substitutions: Substitution[] = substitutionRows.map((row) => ({
+      oldIngredientID: row.old_ingredient_id,
+      beginningWithStepID: row.beginning_with_step_id,
+      newIngredient: {
+        name: row.new_ingredient_name,
+        amount: row.new_ingredient_amount,
+        unit: row.new_ingredient_unit,
+      },
+    }));
+
+    recipes.push({
+      id: recipeRow.id,
+      name: recipeRow.name,
+      imageUri: recipeRow.image_uri ?? undefined,
+      categories: categoryRows.map((row) => row.category),
+      servings: recipeRow.servings,
+      ingredients: ingredients,
+      highlightIngredientIDs: highlightIngredientIDs,
+      steps: steps,
+      substitutions: substitutions,
+    });
+  }
+
+  return recipes;
 }

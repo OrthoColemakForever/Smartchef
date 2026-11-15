@@ -1,10 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Colors, Spacing } from "@/constants/theme";
 import { Recipe } from "@/lib/recipe-graph";
 import { RecipeCard } from "@/components/recipe-card";
+import { useSQLiteContext } from "expo-sqlite";
+import { getAllRecipes } from "@/lib/database";
 
-const recipes: Recipe[] = [
+export const sampleRecipes: Recipe[] = [
   {
     id: "r1",
     name: "Spaghetti",
@@ -71,6 +73,17 @@ export default function RecipeGrid() {
     ),
   );
   const cardWidth = (availableWidth - CARD_GAP * (numColumns - 1)) / numColumns;
+  const db = useSQLiteContext();
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+
+  useEffect(() => {
+    async function loadRecipes() {
+      const loaded = await getAllRecipes(db);
+      setRecipes(loaded);
+    }
+    loadRecipes();
+  }, [db]);
+
   return (
     <View
       style={{ flex: 1 }}
