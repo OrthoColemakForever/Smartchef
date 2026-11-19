@@ -1,18 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
-
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
+import { AnimatedSplashOverlay } from "@/components/animated-icon";
+import AppTabs from "@/components/app-tabs";
+import { getAllRecipes, saveRecipe, setupDatabase } from "@/lib/database";
+import { sampleRecipes } from "@/app/(tabs)/index";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+async function onInit(db: SQLiteDatabase) {
+  await setupDatabase(db);
+
+  const existing = await getAllRecipes(db);
+  if (existing.length === 0) {
+    for (const recipe of sampleRecipes) {
+      await saveRecipe(db, recipe);
+    }
+  }
+}
+
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <SQLiteProvider databaseName="smartchef.db" onInit={onInit}>
       <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="new-recipe" options={{ title: "New Recipe" }} />
+      </Stack>
+    </SQLiteProvider>
   );
 }

@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Smartchef",
+    "name": "Little Chef",
     "slug": "Smartchef",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "smartchef",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.anonymous.Smartchef",
+      "isTabletOnly": true
     },
     "android": {
       "adaptiveIcon": {
@@ -17,11 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
-    },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.Smartchef"
     },
     "plugins": [
       "expo-router",
