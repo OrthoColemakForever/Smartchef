@@ -1,9 +1,10 @@
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import AppTabs from "@/components/app-tabs";
 import { getAllRecipes, saveRecipe, setupDatabase } from "@/lib/database";
-import { sampleRecipes } from "@/app/index";
+import { sampleRecipes } from "@/app/(tabs)/index";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,11 +19,14 @@ async function onInit(db: SQLiteDatabase) {
   }
 }
 
-export default function TabLayout() {
+export default function RootLayout() {
   return (
     <SQLiteProvider databaseName="smartchef.db" onInit={onInit}>
       <AnimatedSplashOverlay />
-      <AppTabs />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="new-recipe" options={{ title: "New Recipe" }} />
+      </Stack>
     </SQLiteProvider>
   );
 }

@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useEffect, useState } from "react";
-import { Colors, Spacing } from "@/constants/theme";
-import { Recipe } from "@/lib/recipe-graph";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useCallback, useState } from "react";
 import { RecipeCard } from "@/components/recipe-card";
-import { useSQLiteContext } from "expo-sqlite";
+import { Colors, Spacing } from "@/constants/theme";
 import { getAllRecipes } from "@/lib/database";
+import { Recipe } from "@/lib/recipe-graph";
+import { useSQLiteContext } from "expo-sqlite";
+import { router, useFocusEffect } from "expo-router";
 
 export const sampleRecipes: Recipe[] = [
   {
@@ -76,13 +77,15 @@ export default function RecipeGrid() {
   const db = useSQLiteContext();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-  useEffect(() => {
-    async function loadRecipes() {
-      const loaded = await getAllRecipes(db);
-      setRecipes(loaded);
-    }
-    loadRecipes();
-  }, [db]);
+  useFocusEffect(
+    useCallback(() => {
+      async function loadRecipes() {
+        const loaded = await getAllRecipes(db);
+        setRecipes(loaded);
+      }
+      loadRecipes();
+    }, [db]),
+  );
 
   return (
     <View
@@ -101,6 +104,9 @@ export default function RecipeGrid() {
           <RecipeCard recipe={item} width={cardWidth} />
         )}
       />
+      <Pressable onPress={() => router.push("/new-recipe")}>
+        <Text>+ Add Recipe</Text>
+      </Pressable>
     </View>
   );
 }
