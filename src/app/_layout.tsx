@@ -25,7 +25,13 @@ export default function RootLayout() {
       <AnimatedSplashOverlay />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="new-recipe" options={{ title: "New Recipe" }} />
+        <Stack.Screen
+          name="new-recipe"
+          options={{
+            title: "Add a New Recipe",
+            headerTitleStyle: { fontSize: 26, fontWeight: "600" },
+          }}
+        />
       </Stack>
     </SQLiteProvider>
   );
