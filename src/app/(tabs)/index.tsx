@@ -101,7 +101,9 @@ export default function RecipeGrid() {
         numColumns={numColumns}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <RecipeCard recipe={item} width={cardWidth} />
+          <Pressable onPress={() => router.push(`/recipe/${item.id}`)}>
+            <RecipeCard recipe={item} width={cardWidth} />
+          </Pressable>
         )}
       />
       <Pressable onPress={() => router.push("/new-recipe")}>

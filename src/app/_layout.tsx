@@ -2,7 +2,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
-import AppTabs from "@/components/app-tabs";
 import { getAllRecipes, saveRecipe, setupDatabase } from "@/lib/database";
 import { sampleRecipes } from "@/app/(tabs)/index";
 
@@ -29,6 +28,13 @@ export default function RootLayout() {
           name="new-recipe"
           options={{
             title: "Add a New Recipe",
+            headerTitleStyle: { fontSize: 26, fontWeight: "600" },
+          }}
+        />
+        <Stack.Screen
+          name="recipe/[id]"
+          options={{
+            title: "Recipe Details",
             headerTitleStyle: { fontSize: 26, fontWeight: "600" },
           }}
         />
