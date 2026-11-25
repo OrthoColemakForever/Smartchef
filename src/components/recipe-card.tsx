@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { Recipe } from "@/lib/recipe-graph";
-import { Colors, Spacing } from "@/constants/theme";
+import { CategoryColors, Colors, Spacing } from "@/constants/theme";
 
 type RecipeCardProps = { recipe: Recipe; width: number };
 
@@ -35,7 +35,13 @@ export function RecipeCard({ recipe, width }: RecipeCardProps) {
         {visibleCategories.length > 0 && (
           <View style={styles.categoryRow}>
             {visibleCategories.map((category) => (
-              <View key={category} style={styles.categoryChip}>
+              <View
+                key={category}
+                style={[
+                  styles.categoryChip,
+                  { backgroundColor: CategoryColors[category] },
+                ]}
+              >
                 <Text style={styles.categoryChipText}>{category}</Text>
               </View>
             ))}
@@ -86,14 +92,13 @@ const styles = StyleSheet.create({
     gap: Spacing.half,
   },
   categoryChip: {
-    backgroundColor: "rgba(17, 20, 23, 0.55)",
     borderRadius: 999,
-    paddingHorizontal: Spacing.two,
-    paddingVertical: Spacing.half,
+    paddingHorizontal: 12,
+    paddingVertical: 3,
   },
   categoryChipText: {
     color: "#ffffff",
-    fontSize: 11,
+    fontSize: 21,
     fontWeight: "600",
     textTransform: "capitalize",
   },
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Colors.text,
-    fontSize: 15,
+    fontSize: 28.5,
     fontWeight: "600",
   },
   chipRow: {
@@ -116,12 +121,12 @@ const styles = StyleSheet.create({
   chip: {
     backgroundColor: Colors.backgroundSelected,
     borderRadius: 999,
-    paddingHorizontal: Spacing.two,
-    paddingVertical: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 3,
   },
   chipText: {
     color: Colors.accent,
-    fontSize: 11,
+    fontSize: 21,
     fontWeight: "500",
   },
 });

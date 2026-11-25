@@ -6,6 +6,16 @@
 import "@/global.css";
 
 import { Platform } from "react-native";
+import { RecipeCategory } from "@/lib/recipe-graph";
+
+export const CategoryColors: Record<RecipeCategory, string> = {
+  breakfast: "#f2994a",
+  lunch: "#4CAF50",
+  dinner: "#5c6bc0",
+  snack: "#f2c94c",
+  side: "#26a69a",
+  dessert: "#ec407a",
+};
 
 export const Colors = {
   text: "#111417",

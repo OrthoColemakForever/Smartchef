@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { Recipe, RecipeCategory, Step, Unit } from "@/lib/recipe-graph";
-import { Colors, Spacing } from "@/constants/theme";
+import { CategoryColors, Colors, Spacing } from "@/constants/theme";
 
 const GREEN = "#4CAF50";
 const RED = "#c44536";
@@ -23,15 +23,6 @@ const CATEGORY_COLUMNS: RecipeCategory[][] = [
   ["breakfast", "lunch", "dinner"],
   ["snack", "side", "dessert"],
 ];
-
-const CATEGORY_COLORS: Record<RecipeCategory, string> = {
-  breakfast: "#f2994a",
-  lunch: "#4CAF50",
-  dinner: "#5c6bc0",
-  snack: "#f2c94c",
-  side: "#26a69a",
-  dessert: "#ec407a",
-};
 
 type IngredientDraft = {
   id: string;
@@ -307,8 +298,8 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
                         style={[
                           styles.categoryChip,
                           selected && {
-                            backgroundColor: CATEGORY_COLORS[category],
-                            borderColor: CATEGORY_COLORS[category],
+                            backgroundColor: CategoryColors[category],
+                            borderColor: CategoryColors[category],
                           },
                         ]}
                       >

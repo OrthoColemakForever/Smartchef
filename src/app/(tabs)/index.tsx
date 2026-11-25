@@ -1,4 +1,12 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useCallback, useState } from "react";
 import { RecipeCard } from "@/components/recipe-card";
 import { Colors, Spacing } from "@/constants/theme";
@@ -6,6 +14,8 @@ import { getAllRecipes } from "@/lib/database";
 import { Recipe } from "@/lib/recipe-graph";
 import { useSQLiteContext } from "expo-sqlite";
 import { router, useFocusEffect } from "expo-router";
+
+const GREEN = "#4CAF50";
 
 export const sampleRecipes: Recipe[] = [
   {
@@ -76,6 +86,7 @@ export default function RecipeGrid() {
   const cardWidth = (availableWidth - CARD_GAP * (numColumns - 1)) / numColumns;
   const db = useSQLiteContext();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [searchText, setSearchText] = useState("");
 
   useFocusEffect(
     useCallback(() => {
@@ -92,6 +103,31 @@ export default function RecipeGrid() {
       style={{ flex: 1 }}
       onLayout={(event) => setContainerWidth(event.nativeEvent.layout.width)}
     >
+      <View style={styles.topBar}>
+        <View style={styles.searchBar}>
+          <FontAwesome6
+            name="magnifying-glass"
+            iconStyle="solid"
+            size={36}
+            color={Colors.textSecondary}
+          />
+          <TextInput
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search recipes"
+            style={styles.searchInput}
+          />
+        </View>
+
+        <Pressable
+          onPress={() => router.push("/new-recipe")}
+          style={styles.addButton}
+        >
+          <FontAwesome6 name="circle-plus" iconStyle="solid" size={24} color={GREEN} />
+          <Text style={styles.addButtonText}>Add Recipe</Text>
+        </Pressable>
+      </View>
+
       <FlatList
         key={numColumns}
         style={styles.container}
@@ -106,9 +142,6 @@ export default function RecipeGrid() {
           </Pressable>
         )}
       />
-      <Pressable onPress={() => router.push("/new-recipe")}>
-        <Text>+ Add Recipe</Text>
-      </Pressable>
     </View>
   );
 }
@@ -117,5 +150,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.three,
+    paddingHorizontal: GRID_PADDING,
+    paddingTop: Spacing.five,
+    paddingBottom: Spacing.two,
+  },
+  searchBar: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.two,
+    backgroundColor: Colors.backgroundElement,
+    borderWidth: 1,
+    borderColor: Colors.backgroundSelected,
+    borderRadius: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 42,
+    color: Colors.text,
+  },
+  addButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.one,
+    backgroundColor: Colors.backgroundElement,
+    borderWidth: 1,
+    borderColor: Colors.backgroundSelected,
+    borderRadius: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: 10,
+  },
+  addButtonText: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: Colors.text,
   },
 });
