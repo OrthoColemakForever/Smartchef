@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useCallback, useState } from "react";
 import { RecipeCard } from "@/components/recipe-card";
@@ -14,8 +7,6 @@ import { getAllRecipes } from "@/lib/database";
 import { Recipe } from "@/lib/recipe-graph";
 import { useSQLiteContext } from "expo-sqlite";
 import { router, useFocusEffect } from "expo-router";
-
-const GREEN = "#4CAF50";
 
 export const sampleRecipes: Recipe[] = [
   {
@@ -118,14 +109,6 @@ export default function RecipeGrid() {
             style={styles.searchInput}
           />
         </View>
-
-        <Pressable
-          onPress={() => router.push("/new-recipe")}
-          style={styles.addButton}
-        >
-          <FontAwesome6 name="circle-plus" iconStyle="solid" size={24} color={GREEN} />
-          <Text style={styles.addButtonText}>Add Recipe</Text>
-        </Pressable>
       </View>
 
       <FlatList
@@ -174,22 +157,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 42,
-    color: Colors.text,
-  },
-  addButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.one,
-    backgroundColor: Colors.backgroundElement,
-    borderWidth: 1,
-    borderColor: Colors.backgroundSelected,
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: 10,
-  },
-  addButtonText: {
-    fontSize: 20,
-    fontWeight: "600",
     color: Colors.text,
   },
 });
