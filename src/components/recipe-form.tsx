@@ -1,6 +1,9 @@
 import { randomUUID } from "expo-crypto";
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import * as ImagePicker from "expo-image-picker";
+import { IconCamera } from "@/components/icons/icon-camera";
+import { IconMinus } from "@/components/icons/icon-minus";
+import { IconPlus } from "@/components/icons/icon-plus";
+import { IconStar } from "@/components/icons/icon-star";
 import { Image } from "expo-image";
 import {
   Pressable,
@@ -15,7 +18,6 @@ import { Recipe, RecipeCategory, Step, Unit } from "@/lib/recipe-graph";
 import { CategoryColors, Colors, Spacing } from "@/constants/theme";
 
 const GREEN = "#4CAF50";
-const RED = "#c44536";
 const GOLD = "#e8a93a";
 const MAX_HIGHLIGHTED = 3;
 
@@ -335,12 +337,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
               />
             ) : (
               <View style={styles.imagePreviewPlaceholder}>
-                <FontAwesome6
-                  name="camera"
-                  iconStyle="solid"
-                  size={36}
-                  color={Colors.textSecondary}
-                />
+                <IconCamera size={60} />
                 <Text style={styles.imagePreviewText}>Add Photo</Text>
               </View>
             )}
@@ -373,12 +370,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
                   onPress={() => removeIngredient(ingredient.id)}
                   style={styles.iconButton}
                 >
-                  <FontAwesome6
-                    name="circle-minus"
-                    iconStyle="solid"
-                    size={46}
-                    color={RED}
-                  />
+                  <IconMinus size={46} />
                 </Pressable>
               ) : (
                 <View style={styles.iconButton} />
@@ -418,21 +410,11 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
                   onPress={() => toggleHighlight(ingredient.id)}
                   style={styles.starButton}
                 >
-                  <FontAwesome6
-                    name="star"
-                    iconStyle={ingredient.isHighlighted ? "solid" : "regular"}
-                    size={36}
-                    color={GOLD}
-                  />
+                  <IconStar size={36} filled={ingredient.isHighlighted} />
                 </Pressable>
               ) : (
                 <View style={styles.starButton}>
-                  <FontAwesome6
-                    name="star"
-                    iconStyle="solid"
-                    size={36}
-                    color={GOLD}
-                  />
+                  <IconStar size={36} filled />
                 </View>
               )}
             </View>
@@ -442,12 +424,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
         {editable && (
           <View style={styles.row}>
             <Pressable onPress={addIngredient} style={styles.iconButton}>
-              <FontAwesome6
-                name="circle-plus"
-                iconStyle="solid"
-                size={52}
-                color={GREEN}
-              />
+              <IconPlus size={52} />
             </Pressable>
           </View>
         )}
@@ -463,12 +440,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
                 onPress={() => removeStep(step.id)}
                 style={styles.iconButton}
               >
-                <FontAwesome6
-                  name="circle-minus"
-                  iconStyle="solid"
-                  size={46}
-                  color={RED}
-                />
+                <IconMinus size={46} />
               </Pressable>
             ) : (
               <View style={styles.iconButton} />
@@ -488,12 +460,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
         {editable && (
           <View style={styles.row}>
             <Pressable onPress={addStep} style={styles.iconButton}>
-              <FontAwesome6
-                name="circle-plus"
-                iconStyle="solid"
-                size={52}
-                color={GREEN}
-              />
+              <IconPlus size={52} />
             </Pressable>
           </View>
         )}

@@ -1,13 +1,15 @@
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { router, usePathname } from "expo-router";
 import { Colors, Spacing } from "@/constants/theme";
+import { IconHome } from "@/components/icons/icon-home";
+import { IconPlus } from "@/components/icons/icon-plus";
+import { IconCook } from "@/components/icons/icon-cook";
 
 const DESTINATIONS = [
-  { href: "/", icon: "house", label: "Home" },
-  { href: "/new-recipe", icon: "circle-plus", label: "Add Recipe" },
-  { href: "/cook", icon: "utensils", label: "Let's Cook" },
+  { href: "/", Icon: IconHome, label: "Home" },
+  { href: "/new-recipe", Icon: IconPlus, label: "Add Recipe" },
+  { href: "/cook", Icon: IconCook, label: "Let's Cook" },
 ] as const;
 
 export function SidebarNav() {
@@ -28,18 +30,14 @@ export function SidebarNav() {
         <View style={styles.items}>
           {DESTINATIONS.map((destination) => {
             const isActive = pathname === destination.href;
+            const Icon = destination.Icon;
             return (
               <Pressable
                 key={destination.href}
                 onPress={() => navigateTo(destination.href)}
                 style={styles.item}
               >
-                <FontAwesome6
-                  name={destination.icon}
-                  iconStyle="solid"
-                  size={34}
-                  color={isActive ? Colors.accent : Colors.textSecondary}
-                />
+                <Icon size={54} />
                 <Text style={[styles.label, isActive && styles.labelActive]}>
                   {destination.label}
                 </Text>
@@ -54,7 +52,7 @@ export function SidebarNav() {
 
 const styles = StyleSheet.create({
   sidebar: {
-    width: 110,
+    width: 140,
     backgroundColor: Colors.backgroundElement,
     borderLeftWidth: 1,
     borderLeftColor: Colors.backgroundSelected,
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two,
   },
   label: {
-    fontSize: 17,
+    fontSize: 22,
     fontWeight: "600",
     color: Colors.textSecondary,
     textAlign: "center",

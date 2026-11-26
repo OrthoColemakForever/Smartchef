@@ -1,5 +1,4 @@
 import { FlatList, Pressable, StyleSheet, TextInput, View } from "react-native";
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useCallback, useState } from "react";
 import { RecipeCard } from "@/components/recipe-card";
 import { Colors, Spacing } from "@/constants/theme";
@@ -7,6 +6,7 @@ import { getAllRecipes } from "@/lib/database";
 import { Recipe } from "@/lib/recipe-graph";
 import { useSQLiteContext } from "expo-sqlite";
 import { router, useFocusEffect } from "expo-router";
+import { IconSearch } from "@/components/icons/icon-search";
 
 export const sampleRecipes: Recipe[] = [
   {
@@ -96,12 +96,7 @@ export default function RecipeGrid() {
     >
       <View style={styles.topBar}>
         <View style={styles.searchBar}>
-          <FontAwesome6
-            name="magnifying-glass"
-            iconStyle="solid"
-            size={36}
-            color={Colors.textSecondary}
-          />
+          <IconSearch size={40} />
           <TextInput
             value={searchText}
             onChangeText={setSearchText}

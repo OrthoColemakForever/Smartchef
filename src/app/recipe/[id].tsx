@@ -1,4 +1,3 @@
-import { FontAwesome6 } from "@react-native-vector-icons/fontawesome6";
 import { useEffect, useRef, useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -7,6 +6,8 @@ import { RecipeForm, RecipeFormHandle } from "@/components/recipe-form";
 import { deleteRecipe, getRecipeById, updateRecipe } from "@/lib/database";
 import { Recipe } from "@/lib/recipe-graph";
 import { Colors, Spacing } from "@/constants/theme";
+import { IconPencil } from "@/components/icons/icon-pencil";
+import { IconTrash } from "@/components/icons/icon-trash";
 
 export default function RecipeDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -92,15 +93,10 @@ export default function RecipeDetailsScreen() {
     <View style={styles.container}>
       <View style={styles.toolbar}>
         <Pressable onPress={handlePencilPress} style={styles.toolbarButton}>
-          <FontAwesome6
-            name="pencil"
-            iconStyle="solid"
-            size={36}
-            color={isEditing ? Colors.accent : Colors.textSecondary}
-          />
+          <IconPencil size={56} />
         </Pressable>
         <Pressable onPress={handleDelete} style={styles.toolbarButton}>
-          <FontAwesome6 name="trash" iconStyle="solid" size={36} color="#c44536" />
+          <IconTrash size={56} />
         </Pressable>
       </View>
 
@@ -137,8 +133,8 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.two,
   },
   toolbarButton: {
-    width: 60,
-    height: 60,
+    width: 76,
+    height: 76,
     alignItems: "center",
     justifyContent: "center",
   },
