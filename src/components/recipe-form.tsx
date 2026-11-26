@@ -16,6 +16,8 @@ import {
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { Recipe, RecipeCategory, Step, Unit } from "@/lib/recipe-graph";
 import { CategoryColors, Colors, Spacing } from "@/constants/theme";
+import { parseIngredientReferences } from "@/lib/ing-syntax";
+import { StepRow } from "@/components/step-row";
 
 const GREEN = "#4CAF50";
 const GOLD = "#e8a93a";
@@ -233,14 +235,27 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
       highlightIngredientIDs: ingredients
         .filter((ingredient) => ingredient.isHighlighted)
         .map((ingredient) => ingredient.id),
-      steps: steps.map(
-        (step, index): Step => ({
+      steps: steps.map((step, index): Step => {
+        const referencedNames = parseIngredientReferences(
+          step.command,
+          ingredients.map((ingredient) => ingredient.name),
+        );
+        const usesIngredientIDs = ingredients
+          .filter((ingredient) =>
+            referencedNames.some(
+              (name) =>
+                name.toLowerCase() === ingredient.name.trim().toLowerCase(),
+            ),
+          )
+          .map((ingredient) => ingredient.id);
+
+        return {
           id: step.id,
           index,
           command: step.command.trim(),
-          usesIngredientIDs: [],
-        }),
-      ),
+          usesIngredientIDs,
+        };
+      }),
       substitutions: initialRecipe?.substitutions ?? [],
     };
 
@@ -434,27 +449,16 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
         </View>
 
         {steps.map((step, index) => (
-          <View key={step.id} style={styles.row}>
-            {editable ? (
-              <Pressable
-                onPress={() => removeStep(step.id)}
-                style={styles.iconButton}
-              >
-                <IconMinus size={46} />
-              </Pressable>
-            ) : (
-              <View style={styles.iconButton} />
-            )}
-            <Text style={styles.stepNumber}>{index + 1}.</Text>
-            <TextInput
-              value={step.command}
-              onChangeText={(text) => updateStep(step.id, text)}
-              editable={editable}
-              placeholder="Describe this step"
-              style={styles.rowInputName}
-              multiline
-            />
-          </View>
+          <StepRow
+            key={step.id}
+            id={step.id}
+            index={index}
+            command={step.command}
+            editable={editable}
+            ingredientNames={ingredients.map((ingredient) => ingredient.name)}
+            onChangeCommand={updateStep}
+            onRemove={removeStep}
+          />
         ))}
 
         {editable && (
