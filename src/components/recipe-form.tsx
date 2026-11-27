@@ -18,6 +18,7 @@ import { Recipe, RecipeCategory, Step, Unit } from "@/lib/recipe-graph";
 import { CategoryColors, Colors, Spacing } from "@/constants/theme";
 import { parseIngredientReferences } from "@/lib/ing-syntax";
 import { StepRow } from "@/components/step-row";
+import { resolveRecipeImageSource } from "@/constants/recipe-images";
 
 const GREEN = "#4CAF50";
 const GOLD = "#e8a93a";
@@ -346,7 +347,7 @@ export const RecipeForm = forwardRef<RecipeFormHandle, RecipeFormProps>(
           >
             {imageUri ? (
               <Image
-                source={{ uri: imageUri }}
+                source={resolveRecipeImageSource(imageUri)}
                 style={styles.imagePreviewImage}
                 contentFit="cover"
               />

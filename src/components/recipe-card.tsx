@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { Recipe } from "@/lib/recipe-graph";
 import { CategoryColors, Colors, Spacing } from "@/constants/theme";
+import { resolveRecipeImageSource } from "@/constants/recipe-images";
 
 type RecipeCardProps = { recipe: Recipe; width: number };
 
@@ -26,7 +27,7 @@ export function RecipeCard({ recipe, width }: RecipeCardProps) {
       <View style={styles.imageArea}>
         {recipe.imageUri ? (
           <Image
-            source={recipe.imageUri}
+            source={resolveRecipeImageSource(recipe.imageUri)}
             style={styles.image}
             contentFit="cover"
           />

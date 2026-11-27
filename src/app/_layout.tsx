@@ -5,7 +5,7 @@ import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { getAllRecipes, saveRecipe, setupDatabase } from "@/lib/database";
-import { sampleRecipes } from "@/app/index";
+import { sampleRecipes } from "@/lib/seed-recipes";
 
 SplashScreen.preventAutoHideAsync();
 
