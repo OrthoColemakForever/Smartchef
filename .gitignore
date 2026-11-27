@@ -36,6 +36,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# test SQLite databases (expo-sqlite-mock)
+src/lib/*.db*
+
 example
 
 # generated native folders
